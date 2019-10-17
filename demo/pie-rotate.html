@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rotate-Pie</title>
+    <link rel="stylesheet" href="./assets/common.css">
+    <style>
+        .chart-wrapper {
+            position: relative;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+        }
+        .myIcon {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            margin-left: -19px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Fixing iframe window.innerHeight 0 issue in Safari
+        document.body.clientHeight;
+    </script> 
+    <script src="./build/f2-all.js"></script>
+    <script src="./assets/jquery-3.2.1.min.js"></script>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <div>
+        <div class="chart-wrapper">
+            <canvas id="mountNode"></canvas>
+            <svg class="myIcon" viewBox="0 0 1024 1024" width="40px" height="40px" ><path d="M758.4 385.92 539.52 140.16c-14.72-16.64-40.32-16.64-54.4 0L266.24 385.92C244.48 409.6 261.76 448 293.12 448l437.76 0C762.88 448 779.52 409.6 758.4 385.92z" fill="#515151"></path></svg>
+        </div>
+    </div> 
+    <script>
+        
+        var Util = F2.Util;
+        var Chart = F2.Chart;
+
+        // 设定数据
+        var data = [{
+            name: "A",
+            proportion: 0.8,
+            a: "1"
+        }, {
+            name: 'B',
+            proportion: 0.5,
+            a: '1'
+        }, {
+            name: 'C',
+            proportion: 0.45,
+            a: '1'
+        }, {
+            name: 'D',
+            proportion: 0.15,
+            a: '1'
+        }, {
+            name: 'E',
+            proportion: 0.12,
+            a: '1'
+        }, {
+            name: 'F',
+            proportion: 0.1,
+            a: '1'
+        }, {
+            name: 'G',
+            proportion: 0.03,
+            a: '1'
+        }];
+        // 创建一个新的Chart
+        var chart = new Chart({
+            id: 'mountNode',
+            pixelRatio: window.devicePixelRatio
+        })
+        chart.source(data);
+        chart.legend(false);
+        // 设置坐标系，设置为极坐标系
+        chart.coord('polar', {
+            transposed: true,
+            radius: 0.8,
+        })
+        chart.axis(false);
+        // 设置图表的辅助信息展示，借助legend实现联动
+        chart.tooltip(false);
+        chart.legend({
+            custom: true,
+            position: 'bottom',
+            align: 'center',
+            titleStyle: {
+                width: 20,
+                height: 20,
+            },
+            nameStyle: {
+                fill: '#777',
+                fontSize: 16,
+            },
+            valueStyle: {
+                fill: '#000',
+                fontSize: 16,
+            },
+            joinString: "类的值：",
+            items: [{
+            }]
+        }); 
+
+        // Geometry是几何标记图像，决定了图表的类型，进行图形的映射
+        chart.interval()
+            .position("a*proportion")
+            .color('name', ['#1890FF', '#41D9C7', '#2FC25B', '#FACC14', '#E6965C', '#223273', '#7564CC', '#8543E0', '#5C8EE6', '#13C2C2', '#5CA3E6'])
+            .adjust('stack')
+            .style({
+                lineWidth: 1,
+                stroke: '#fff'
+            });
+
+        chart.interaction('pie-move', {});
+        chart.render();
+    </script>
+</body>
+</html>
