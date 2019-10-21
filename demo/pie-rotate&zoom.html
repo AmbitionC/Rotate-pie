@@ -27,7 +27,7 @@
         // Fixing iframe window.innerHeight 0 issue in Safari
         document.body.clientHeight;
     </script> 
-    <script src="./build/f2-all.js"></script>
+    <script src="../build/f2-all.js"></script>
     <script src="./assets/jquery-3.2.1.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <div>
@@ -118,6 +118,10 @@
             });
 
         chart.interaction('pie-move', {});
+        chart.interaction('pie-zoom', {
+            zoomFunction: true,
+            dataSource: data
+        });
         chart.render();
     </script>
 </body>

@@ -93,12 +93,12 @@ var Util = {
   isFunction: __webpack_require__(56),
   isDate: __webpack_require__(57),
   isArray: __webpack_require__(17),
-  isNil: __webpack_require__(29),
-  isObject: __webpack_require__(30),
-  isPlainObject: __webpack_require__(31),
+  isNil: __webpack_require__(30),
+  isObject: __webpack_require__(31),
+  isPlainObject: __webpack_require__(32),
   deepMix: __webpack_require__(59),
   mix: __webpack_require__(60),
-  each: __webpack_require__(32),
+  each: __webpack_require__(33),
   uniq: __webpack_require__(61),
   isObjectValueEqual: function isObjectValueEqual(a, b) {
     // for vue.js
@@ -670,7 +670,7 @@ module.exports = {
 
 var G = {
   Canvas: __webpack_require__(88),
-  Group: __webpack_require__(38),
+  Group: __webpack_require__(39),
   Shape: __webpack_require__(2),
   Matrix: __webpack_require__(22),
   Vector2: __webpack_require__(3)
@@ -704,7 +704,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 var Util = __webpack_require__(0);
 
-var Base = __webpack_require__(33);
+var Base = __webpack_require__(34);
 
 var GROUP_ATTRS = ['color', 'size', 'shape'];
 var FIELD_ORIGIN = '_origin';
@@ -2323,7 +2323,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
-var Base = __webpack_require__(33);
+var Base = __webpack_require__(34);
 
 var Plot = __webpack_require__(64);
 
@@ -3281,11 +3281,11 @@ var isString = __webpack_require__(70);
 
 var isArray = __webpack_require__(19);
 
-var isNil = __webpack_require__(34);
+var isNil = __webpack_require__(35);
 
 var mix = __webpack_require__(71);
 
-var each = __webpack_require__(36);
+var each = __webpack_require__(37);
 
 function toScaleString(scale, value) {
   if (isString(value)) {
@@ -3685,7 +3685,7 @@ module.exports = Base;
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isType = __webpack_require__(35);
+var isType = __webpack_require__(36);
 
 var isArray = Array.isArray ? Array.isArray : function (value) {
   return isType(value, 'Array');
@@ -4487,595 +4487,6 @@ module.exports = isString;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isNil = __webpack_require__(29);
-
-function toString(value) {
-  if (isNil(value)) return '';
-  return value.toString();
-}
-
-module.exports = toString;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-// isFinite,
-var isNil = function isNil(value) {
-  /**
-   * isNil(null) => true
-   * isNil() => true
-   */
-  return value === null || value === undefined;
-};
-
-module.exports = isNil;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var isObject = function isObject(value) {
-  /**
-   * isObject({}) => true
-   * isObject([1, 2, 3]) => true
-   * isObject(Function) => true
-   * isObject(null) => false
-   */
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-  return value !== null && type === 'object' || type === 'function';
-};
-
-module.exports = isObject;
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObjectLike = __webpack_require__(58);
-
-var isType = __webpack_require__(6);
-
-var isPlainObject = function isPlainObject(value) {
-  /**
-   * isObjectLike(new Foo) => false
-   * isObjectLike([1, 2, 3]) => false
-   * isObjectLike({ x: 0, y: 0 }) => true
-   * isObjectLike(Object.create(null)) => true
-   */
-  if (!isObjectLike(value) || !isType(value, 'Object')) {
-    return false;
-  }
-
-  if (Object.getPrototypeOf(value) === null) {
-    return true;
-  }
-
-  var proto = value;
-
-  while (Object.getPrototypeOf(proto) !== null) {
-    proto = Object.getPrototypeOf(proto);
-  }
-
-  return Object.getPrototypeOf(value) === proto;
-};
-
-module.exports = isPlainObject;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(30);
-
-var isArray = __webpack_require__(17);
-
-var each = function each(elements, func) {
-  if (!elements) {
-    return;
-  }
-
-  var rst = void 0;
-
-  if (isArray(elements)) {
-    for (var i = 0, len = elements.length; i < len; i++) {
-      rst = func(elements[i], i);
-
-      if (rst === false) {
-        break;
-      }
-    }
-  } else if (isObject(elements)) {
-    for (var k in elements) {
-      if (elements.hasOwnProperty(k)) {
-        rst = func(elements[k], k);
-
-        if (rst === false) {
-          break;
-        }
-      }
-    }
-  }
-};
-
-module.exports = each;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * @fileOverview Base class of chart and geometry
- * @author dxq613@gmail.com
- */
-var Util = __webpack_require__(0);
-
-var Base =
-/*#__PURE__*/
-function () {
-  var _proto = Base.prototype;
-
-  _proto.getDefaultCfg = function getDefaultCfg() {
-    return {};
-  };
-
-  function Base(cfg) {
-    var attrs = {};
-    var defaultCfg = this.getDefaultCfg();
-    this._attrs = attrs;
-    Util.mix(attrs, defaultCfg, cfg);
-  }
-
-  _proto.get = function get(name) {
-    return this._attrs[name];
-  };
-
-  _proto.set = function set(name, value) {
-    this._attrs[name] = value;
-  };
-
-  _proto.destroy = function destroy() {
-    this._attrs = {};
-    this.destroyed = true;
-  };
-
-  return Base;
-}();
-
-module.exports = Base;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-// isFinite,
-var isNil = function isNil(value) {
-  /**
-   * isNil(null) => true
-   * isNil() => true
-   */
-  return value === null || value === undefined;
-};
-
-module.exports = isNil;
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-var isType = function isType(value, type) {
-  return toString.call(value) === '[object ' + type + ']';
-};
-
-module.exports = isType;
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(69);
-
-var isArray = __webpack_require__(19);
-
-var each = function each(elements, func) {
-  if (!elements) {
-    return;
-  }
-
-  var rst = void 0;
-
-  if (isArray(elements)) {
-    for (var i = 0, len = elements.length; i < len; i++) {
-      rst = func(elements[i], i);
-
-      if (rst === false) {
-        break;
-      }
-    }
-  } else if (isObject(elements)) {
-    for (var k in elements) {
-      if (elements.hasOwnProperty(k)) {
-        rst = func(elements[k], k);
-
-        if (rst === false) {
-          break;
-        }
-      }
-    }
-  }
-};
-
-module.exports = each;
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Util = __webpack_require__(0);
-
-var Shape = __webpack_require__(2);
-
-var SHAPE_MAP = {};
-var INDEX = '_INDEX';
-
-function getComparer(compare) {
-  return function (left, right) {
-    var result = compare(left, right);
-    return result === 0 ? left[INDEX] - right[INDEX] : result;
-  };
-}
-
-module.exports = {
-  getGroupClass: function getGroupClass() {},
-  getChildren: function getChildren() {
-    return this.get('children');
-  },
-  addShape: function addShape(type, cfg) {
-    if (cfg === void 0) {
-      cfg = {};
-    }
-
-    var canvas = this.get('canvas');
-    var shapeType = SHAPE_MAP[type];
-
-    if (!shapeType) {
-      shapeType = Util.upperFirst(type);
-      SHAPE_MAP[type] = shapeType;
-    }
-
-    cfg.canvas = canvas;
-
-    if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
-      cfg.attrs.fontFamily = cfg.attrs.fontFamily || canvas.get('fontFamily');
-    }
-
-    var shape = new Shape[shapeType](cfg);
-    this.add(shape);
-    return shape;
-  },
-  addGroup: function addGroup(cfg) {
-    var canvas = this.get('canvas');
-    var groupClass = this.getGroupClass();
-    cfg = Util.mix({}, cfg);
-    cfg.canvas = canvas;
-    cfg.parent = this;
-    var rst = new groupClass(cfg);
-    this.add(rst);
-    return rst;
-  },
-  contain: function contain(item) {
-    var children = this.get('children');
-    return children.indexOf(item) > -1;
-  },
-  sort: function sort() {
-    var children = this.get('children');
-
-    for (var i = 0, len = children.length; i < len; i++) {
-      var child = children[i];
-      child[INDEX] = i;
-    }
-
-    children.sort(getComparer(function (obj1, obj2) {
-      return obj1.get('zIndex') - obj2.get('zIndex');
-    }));
-    return this;
-  },
-  clear: function clear() {
-    var children = this.get('children');
-
-    while (children.length !== 0) {
-      children[children.length - 1].remove(true);
-    }
-
-    return this;
-  },
-  add: function add(items) {
-    var self = this;
-    var children = self.get('children');
-
-    if (!Util.isArray(items)) {
-      items = [items];
-    }
-
-    for (var i = 0, len = items.length; i < len; i++) {
-      var item = items[i];
-      var parent = item.get('parent');
-
-      if (parent) {
-        var descendants = parent.get('children');
-        Util.Array.remove(descendants, item);
-      }
-
-      self._setEvn(item);
-
-      children.push(item);
-    }
-
-    return self;
-  },
-  _setEvn: function _setEvn(item) {
-    var self = this;
-    item._attrs.parent = self;
-    item._attrs.context = self._attrs.context;
-    item._attrs.canvas = self._attrs.canvas;
-    var clip = item._attrs.attrs.clip;
-
-    if (clip) {
-      clip.set('parent', self);
-      clip.set('context', self.get('context'));
-    }
-
-    if (item._attrs.isGroup) {
-      var children = item._attrs.children;
-
-      for (var i = 0, len = children.length; i < len; i++) {
-        item._setEvn(children[i]);
-      }
-    }
-  }
-};
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-var Util = __webpack_require__(0);
-
-var Element = __webpack_require__(25);
-
-var Container = __webpack_require__(37);
-
-var Vector2 = __webpack_require__(3);
-
-var Group =
-/*#__PURE__*/
-function (_Element) {
-  _inheritsLoose(Group, _Element);
-
-  function Group() {
-    return _Element.apply(this, arguments) || this;
-  }
-
-  var _proto = Group.prototype;
-
-  _proto._initProperties = function _initProperties() {
-    this._attrs = {
-      zIndex: 0,
-      visible: true,
-      destroyed: false,
-      isGroup: true,
-      children: []
-    };
-  };
-
-  _proto.drawInner = function drawInner(context) {
-    var children = this.get('children');
-
-    for (var i = 0, len = children.length; i < len; i++) {
-      var child = children[i];
-      child.draw(context);
-    }
-
-    return this;
-  };
-
-  _proto.getBBox = function getBBox() {
-    var self = this;
-    var minX = Infinity;
-    var maxX = -Infinity;
-    var minY = Infinity;
-    var maxY = -Infinity;
-    var children = self.get('children');
-
-    for (var i = 0, length = children.length; i < length; i++) {
-      var child = children[i];
-
-      if (child.get('visible')) {
-        var box = child.getBBox();
-
-        if (!box) {
-          continue;
-        }
-
-        var leftTop = [box.minX, box.minY];
-        var leftBottom = [box.minX, box.maxY];
-        var rightTop = [box.maxX, box.minY];
-        var rightBottom = [box.maxX, box.maxY];
-        var matrix = child.attr('matrix');
-        Vector2.transformMat2d(leftTop, leftTop, matrix);
-        Vector2.transformMat2d(leftBottom, leftBottom, matrix);
-        Vector2.transformMat2d(rightTop, rightTop, matrix);
-        Vector2.transformMat2d(rightBottom, rightBottom, matrix);
-        minX = Math.min(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], minX);
-        maxX = Math.max(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], maxX);
-        minY = Math.min(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], minY);
-        maxY = Math.max(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], maxY);
-      }
-    }
-
-    return {
-      minX: minX,
-      minY: minY,
-      maxX: maxX,
-      maxY: maxY,
-      x: minX,
-      y: minY,
-      width: maxX - minX,
-      height: maxY - minY
-    };
-  };
-
-  _proto.destroy = function destroy() {
-    if (this.get('destroyed')) {
-      return;
-    }
-
-    this.clear();
-
-    _Element.prototype.destroy.call(this);
-  };
-
-  return Group;
-}(Element);
-
-Util.mix(Group.prototype, Container, {
-  getGroupClass: function getGroupClass() {
-    return Group;
-  }
-});
-module.exports = Group;
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Util = __webpack_require__(0);
-
-var Shape = __webpack_require__(7);
-
-var ShapeUtil = __webpack_require__(16);
-
-var Global = __webpack_require__(1); // register line geom
-
-
-var Line = Shape.registerFactory('line', {
-  defaultShapeType: 'line'
-});
-
-function getStyle(cfg) {
-  var style = {
-    strokeStyle: cfg.color
-  };
-
-  if (cfg.size >= 0) {
-    style.lineWidth = cfg.size;
-  }
-
-  Util.mix(style, cfg.style);
-  return Util.mix({}, Global.shape.line, style);
-}
-
-function drawLines(cfg, container, style, smooth) {
-  var points = cfg.points;
-
-  if (points.length && Util.isArray(points[0].y)) {
-    var topPoints = [];
-    var bottomPoints = [];
-
-    for (var i = 0, len = points.length; i < len; i++) {
-      var point = points[i];
-      var tmp = ShapeUtil.splitPoints(point);
-      bottomPoints.push(tmp[0]);
-      topPoints.push(tmp[1]);
-    }
-
-    if (cfg.isInCircle) {
-      topPoints.push(topPoints[0]);
-      bottomPoints.push(bottomPoints[0]);
-    }
-
-    if (cfg.isStack) {
-      return container.addShape('Polyline', {
-        className: 'line',
-        attrs: Util.mix({
-          points: topPoints,
-          smooth: smooth
-        }, style)
-      });
-    }
-
-    var topShape = container.addShape('Polyline', {
-      className: 'line',
-      attrs: Util.mix({
-        points: topPoints,
-        smooth: smooth
-      }, style)
-    });
-    var bottomShape = container.addShape('Polyline', {
-      className: 'line',
-      attrs: Util.mix({
-        points: bottomPoints,
-        smooth: smooth
-      }, style)
-    });
-    return [topShape, bottomShape];
-  }
-
-  if (cfg.isInCircle) {
-    points.push(points[0]);
-  }
-
-  return container.addShape('Polyline', {
-    className: 'line',
-    attrs: Util.mix({
-      points: points,
-      smooth: smooth
-    }, style)
-  });
-}
-
-var SHAPES = ['line', 'smooth', 'dash'];
-Util.each(SHAPES, function (shapeType) {
-  Shape.registerShape('line', shapeType, {
-    draw: function draw(cfg, container) {
-      var smooth = shapeType === 'smooth';
-      var style = getStyle(cfg);
-
-      if (shapeType === 'dash') {
-        style.lineDash = Global.lineDash;
-      }
-
-      return drawLines(cfg, container, style, smooth);
-    }
-  });
-});
-module.exports = Line;
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isType = __webpack_require__(105);
-
-var isArray = Array.isArray ? Array.isArray : function (value) {
-  return isType(value, 'Array');
-};
-module.exports = isArray;
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /**
  * The parent class of interaction
  * @author sima.zhang1990@gmail.com
@@ -5265,6 +4676,595 @@ Chart.prototype.clearInteraction = function (type) {
 };
 
 module.exports = Interaction;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isNil = __webpack_require__(30);
+
+function toString(value) {
+  if (isNil(value)) return '';
+  return value.toString();
+}
+
+module.exports = toString;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+// isFinite,
+var isNil = function isNil(value) {
+  /**
+   * isNil(null) => true
+   * isNil() => true
+   */
+  return value === null || value === undefined;
+};
+
+module.exports = isNil;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+var isObject = function isObject(value) {
+  /**
+   * isObject({}) => true
+   * isObject([1, 2, 3]) => true
+   * isObject(Function) => true
+   * isObject(null) => false
+   */
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+  return value !== null && type === 'object' || type === 'function';
+};
+
+module.exports = isObject;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObjectLike = __webpack_require__(58);
+
+var isType = __webpack_require__(6);
+
+var isPlainObject = function isPlainObject(value) {
+  /**
+   * isObjectLike(new Foo) => false
+   * isObjectLike([1, 2, 3]) => false
+   * isObjectLike({ x: 0, y: 0 }) => true
+   * isObjectLike(Object.create(null)) => true
+   */
+  if (!isObjectLike(value) || !isType(value, 'Object')) {
+    return false;
+  }
+
+  if (Object.getPrototypeOf(value) === null) {
+    return true;
+  }
+
+  var proto = value;
+
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return Object.getPrototypeOf(value) === proto;
+};
+
+module.exports = isPlainObject;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(31);
+
+var isArray = __webpack_require__(17);
+
+var each = function each(elements, func) {
+  if (!elements) {
+    return;
+  }
+
+  var rst = void 0;
+
+  if (isArray(elements)) {
+    for (var i = 0, len = elements.length; i < len; i++) {
+      rst = func(elements[i], i);
+
+      if (rst === false) {
+        break;
+      }
+    }
+  } else if (isObject(elements)) {
+    for (var k in elements) {
+      if (elements.hasOwnProperty(k)) {
+        rst = func(elements[k], k);
+
+        if (rst === false) {
+          break;
+        }
+      }
+    }
+  }
+};
+
+module.exports = each;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * @fileOverview Base class of chart and geometry
+ * @author dxq613@gmail.com
+ */
+var Util = __webpack_require__(0);
+
+var Base =
+/*#__PURE__*/
+function () {
+  var _proto = Base.prototype;
+
+  _proto.getDefaultCfg = function getDefaultCfg() {
+    return {};
+  };
+
+  function Base(cfg) {
+    var attrs = {};
+    var defaultCfg = this.getDefaultCfg();
+    this._attrs = attrs;
+    Util.mix(attrs, defaultCfg, cfg);
+  }
+
+  _proto.get = function get(name) {
+    return this._attrs[name];
+  };
+
+  _proto.set = function set(name, value) {
+    this._attrs[name] = value;
+  };
+
+  _proto.destroy = function destroy() {
+    this._attrs = {};
+    this.destroyed = true;
+  };
+
+  return Base;
+}();
+
+module.exports = Base;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+// isFinite,
+var isNil = function isNil(value) {
+  /**
+   * isNil(null) => true
+   * isNil() => true
+   */
+  return value === null || value === undefined;
+};
+
+module.exports = isNil;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+var isType = function isType(value, type) {
+  return toString.call(value) === '[object ' + type + ']';
+};
+
+module.exports = isType;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(69);
+
+var isArray = __webpack_require__(19);
+
+var each = function each(elements, func) {
+  if (!elements) {
+    return;
+  }
+
+  var rst = void 0;
+
+  if (isArray(elements)) {
+    for (var i = 0, len = elements.length; i < len; i++) {
+      rst = func(elements[i], i);
+
+      if (rst === false) {
+        break;
+      }
+    }
+  } else if (isObject(elements)) {
+    for (var k in elements) {
+      if (elements.hasOwnProperty(k)) {
+        rst = func(elements[k], k);
+
+        if (rst === false) {
+          break;
+        }
+      }
+    }
+  }
+};
+
+module.exports = each;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Util = __webpack_require__(0);
+
+var Shape = __webpack_require__(2);
+
+var SHAPE_MAP = {};
+var INDEX = '_INDEX';
+
+function getComparer(compare) {
+  return function (left, right) {
+    var result = compare(left, right);
+    return result === 0 ? left[INDEX] - right[INDEX] : result;
+  };
+}
+
+module.exports = {
+  getGroupClass: function getGroupClass() {},
+  getChildren: function getChildren() {
+    return this.get('children');
+  },
+  addShape: function addShape(type, cfg) {
+    if (cfg === void 0) {
+      cfg = {};
+    }
+
+    var canvas = this.get('canvas');
+    var shapeType = SHAPE_MAP[type];
+
+    if (!shapeType) {
+      shapeType = Util.upperFirst(type);
+      SHAPE_MAP[type] = shapeType;
+    }
+
+    cfg.canvas = canvas;
+
+    if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
+      cfg.attrs.fontFamily = cfg.attrs.fontFamily || canvas.get('fontFamily');
+    }
+
+    var shape = new Shape[shapeType](cfg);
+    this.add(shape);
+    return shape;
+  },
+  addGroup: function addGroup(cfg) {
+    var canvas = this.get('canvas');
+    var groupClass = this.getGroupClass();
+    cfg = Util.mix({}, cfg);
+    cfg.canvas = canvas;
+    cfg.parent = this;
+    var rst = new groupClass(cfg);
+    this.add(rst);
+    return rst;
+  },
+  contain: function contain(item) {
+    var children = this.get('children');
+    return children.indexOf(item) > -1;
+  },
+  sort: function sort() {
+    var children = this.get('children');
+
+    for (var i = 0, len = children.length; i < len; i++) {
+      var child = children[i];
+      child[INDEX] = i;
+    }
+
+    children.sort(getComparer(function (obj1, obj2) {
+      return obj1.get('zIndex') - obj2.get('zIndex');
+    }));
+    return this;
+  },
+  clear: function clear() {
+    var children = this.get('children');
+
+    while (children.length !== 0) {
+      children[children.length - 1].remove(true);
+    }
+
+    return this;
+  },
+  add: function add(items) {
+    var self = this;
+    var children = self.get('children');
+
+    if (!Util.isArray(items)) {
+      items = [items];
+    }
+
+    for (var i = 0, len = items.length; i < len; i++) {
+      var item = items[i];
+      var parent = item.get('parent');
+
+      if (parent) {
+        var descendants = parent.get('children');
+        Util.Array.remove(descendants, item);
+      }
+
+      self._setEvn(item);
+
+      children.push(item);
+    }
+
+    return self;
+  },
+  _setEvn: function _setEvn(item) {
+    var self = this;
+    item._attrs.parent = self;
+    item._attrs.context = self._attrs.context;
+    item._attrs.canvas = self._attrs.canvas;
+    var clip = item._attrs.attrs.clip;
+
+    if (clip) {
+      clip.set('parent', self);
+      clip.set('context', self.get('context'));
+    }
+
+    if (item._attrs.isGroup) {
+      var children = item._attrs.children;
+
+      for (var i = 0, len = children.length; i < len; i++) {
+        item._setEvn(children[i]);
+      }
+    }
+  }
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var Util = __webpack_require__(0);
+
+var Element = __webpack_require__(25);
+
+var Container = __webpack_require__(38);
+
+var Vector2 = __webpack_require__(3);
+
+var Group =
+/*#__PURE__*/
+function (_Element) {
+  _inheritsLoose(Group, _Element);
+
+  function Group() {
+    return _Element.apply(this, arguments) || this;
+  }
+
+  var _proto = Group.prototype;
+
+  _proto._initProperties = function _initProperties() {
+    this._attrs = {
+      zIndex: 0,
+      visible: true,
+      destroyed: false,
+      isGroup: true,
+      children: []
+    };
+  };
+
+  _proto.drawInner = function drawInner(context) {
+    var children = this.get('children');
+
+    for (var i = 0, len = children.length; i < len; i++) {
+      var child = children[i];
+      child.draw(context);
+    }
+
+    return this;
+  };
+
+  _proto.getBBox = function getBBox() {
+    var self = this;
+    var minX = Infinity;
+    var maxX = -Infinity;
+    var minY = Infinity;
+    var maxY = -Infinity;
+    var children = self.get('children');
+
+    for (var i = 0, length = children.length; i < length; i++) {
+      var child = children[i];
+
+      if (child.get('visible')) {
+        var box = child.getBBox();
+
+        if (!box) {
+          continue;
+        }
+
+        var leftTop = [box.minX, box.minY];
+        var leftBottom = [box.minX, box.maxY];
+        var rightTop = [box.maxX, box.minY];
+        var rightBottom = [box.maxX, box.maxY];
+        var matrix = child.attr('matrix');
+        Vector2.transformMat2d(leftTop, leftTop, matrix);
+        Vector2.transformMat2d(leftBottom, leftBottom, matrix);
+        Vector2.transformMat2d(rightTop, rightTop, matrix);
+        Vector2.transformMat2d(rightBottom, rightBottom, matrix);
+        minX = Math.min(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], minX);
+        maxX = Math.max(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], maxX);
+        minY = Math.min(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], minY);
+        maxY = Math.max(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], maxY);
+      }
+    }
+
+    return {
+      minX: minX,
+      minY: minY,
+      maxX: maxX,
+      maxY: maxY,
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+  };
+
+  _proto.destroy = function destroy() {
+    if (this.get('destroyed')) {
+      return;
+    }
+
+    this.clear();
+
+    _Element.prototype.destroy.call(this);
+  };
+
+  return Group;
+}(Element);
+
+Util.mix(Group.prototype, Container, {
+  getGroupClass: function getGroupClass() {
+    return Group;
+  }
+});
+module.exports = Group;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Util = __webpack_require__(0);
+
+var Shape = __webpack_require__(7);
+
+var ShapeUtil = __webpack_require__(16);
+
+var Global = __webpack_require__(1); // register line geom
+
+
+var Line = Shape.registerFactory('line', {
+  defaultShapeType: 'line'
+});
+
+function getStyle(cfg) {
+  var style = {
+    strokeStyle: cfg.color
+  };
+
+  if (cfg.size >= 0) {
+    style.lineWidth = cfg.size;
+  }
+
+  Util.mix(style, cfg.style);
+  return Util.mix({}, Global.shape.line, style);
+}
+
+function drawLines(cfg, container, style, smooth) {
+  var points = cfg.points;
+
+  if (points.length && Util.isArray(points[0].y)) {
+    var topPoints = [];
+    var bottomPoints = [];
+
+    for (var i = 0, len = points.length; i < len; i++) {
+      var point = points[i];
+      var tmp = ShapeUtil.splitPoints(point);
+      bottomPoints.push(tmp[0]);
+      topPoints.push(tmp[1]);
+    }
+
+    if (cfg.isInCircle) {
+      topPoints.push(topPoints[0]);
+      bottomPoints.push(bottomPoints[0]);
+    }
+
+    if (cfg.isStack) {
+      return container.addShape('Polyline', {
+        className: 'line',
+        attrs: Util.mix({
+          points: topPoints,
+          smooth: smooth
+        }, style)
+      });
+    }
+
+    var topShape = container.addShape('Polyline', {
+      className: 'line',
+      attrs: Util.mix({
+        points: topPoints,
+        smooth: smooth
+      }, style)
+    });
+    var bottomShape = container.addShape('Polyline', {
+      className: 'line',
+      attrs: Util.mix({
+        points: bottomPoints,
+        smooth: smooth
+      }, style)
+    });
+    return [topShape, bottomShape];
+  }
+
+  if (cfg.isInCircle) {
+    points.push(points[0]);
+  }
+
+  return container.addShape('Polyline', {
+    className: 'line',
+    attrs: Util.mix({
+      points: points,
+      smooth: smooth
+    }, style)
+  });
+}
+
+var SHAPES = ['line', 'smooth', 'dash'];
+Util.each(SHAPES, function (shapeType) {
+  Shape.registerShape('line', shapeType, {
+    draw: function draw(cfg, container) {
+      var smooth = shapeType === 'smooth';
+      var style = getStyle(cfg);
+
+      if (shapeType === 'dash') {
+        style.lineDash = Global.lineDash;
+      }
+
+      return drawLines(cfg, container, style, smooth);
+    }
+  });
+});
+module.exports = Line;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isType = __webpack_require__(105);
+
+var isArray = Array.isArray ? Array.isArray : function (value) {
+  return isType(value, 'Array');
+};
+module.exports = isArray;
 
 /***/ }),
 /* 42 */
@@ -5656,7 +5656,7 @@ var ShapeUtil = __webpack_require__(16);
 
 var Util = __webpack_require__(0);
 
-__webpack_require__(39);
+__webpack_require__(40);
 
 var Path =
 /*#__PURE__*/
@@ -6082,7 +6082,7 @@ module.exports = DomUtil;
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toString = __webpack_require__(28);
+var toString = __webpack_require__(29);
 
 var upperFirst = function upperFirst(value) {
   var str = toString(value);
@@ -6095,7 +6095,7 @@ module.exports = upperFirst;
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toString = __webpack_require__(28);
+var toString = __webpack_require__(29);
 
 var lowerFirst = function lowerFirst(value) {
   var str = toString(value);
@@ -6205,7 +6205,7 @@ module.exports = isObjectLike;
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isPlainObject = __webpack_require__(31);
+var isPlainObject = __webpack_require__(32);
 
 var isArray = __webpack_require__(17);
 
@@ -6283,7 +6283,7 @@ module.exports = mix;
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var each = __webpack_require__(32);
+var each = __webpack_require__(33);
 
 var contains = __webpack_require__(62);
 
@@ -6514,11 +6514,11 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }
 
-var isNil = __webpack_require__(34);
+var isNil = __webpack_require__(35);
 
 var isArray = __webpack_require__(19);
 
-var each = __webpack_require__(36);
+var each = __webpack_require__(37);
 
 var Base = __webpack_require__(13);
 
@@ -6653,7 +6653,7 @@ module.exports = isObject;
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isType = __webpack_require__(35);
+var isType = __webpack_require__(36);
 
 var isString = function isString(str) {
   return isType(str, 'String');
@@ -8329,9 +8329,9 @@ module.exports = Line;
 
 var Util = __webpack_require__(0);
 
-var Container = __webpack_require__(37);
+var Container = __webpack_require__(38);
 
-var Group = __webpack_require__(38);
+var Group = __webpack_require__(39);
 
 var _require = __webpack_require__(44),
     requestAnimationFrame = _require.requestAnimationFrame;
@@ -9591,7 +9591,7 @@ var Path = __webpack_require__(46);
 
 var Geom = __webpack_require__(5);
 
-__webpack_require__(39);
+__webpack_require__(40);
 
 var Line =
 /*#__PURE__*/
@@ -9839,7 +9839,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }
 
-var isArray = __webpack_require__(40);
+var isArray = __webpack_require__(41);
 
 var isNil = __webpack_require__(106);
 
@@ -10029,7 +10029,7 @@ module.exports = Dodge;
 
 var isObject = __webpack_require__(110);
 
-var isArray = __webpack_require__(40);
+var isArray = __webpack_require__(41);
 
 var each = function each(elements, func) {
   if (!elements) {
@@ -16845,7 +16845,7 @@ F2.Chart.plugins.register([Tooltip, Legend, Guide, Animation, ScrollBar, PieLabe
 
 __webpack_require__(161);
 
-F2.Interaction = __webpack_require__(41);
+F2.Interaction = __webpack_require__(28);
 module.exports = F2;
 
 /***/ }),
@@ -17712,13 +17712,14 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  Interaction: __webpack_require__(41),
+  Interaction: __webpack_require__(28),
   PieSelect: __webpack_require__(163),
   IntervalSelect: __webpack_require__(164),
   Swipe: __webpack_require__(165),
   Pan: __webpack_require__(166),
   Pinch: __webpack_require__(167),
-  PieMove: __webpack_require__(168)
+  PieMove: __webpack_require__(168),
+  PieZoom: __webpack_require__(169)
 };
 
 /***/ }),
@@ -20383,7 +20384,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 var Util = __webpack_require__(0);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -20589,7 +20590,7 @@ var Util = __webpack_require__(0);
 
 var Helper = __webpack_require__(26);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -20884,7 +20885,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 var Util = __webpack_require__(0);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -20981,7 +20982,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 var Util = __webpack_require__(0);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -21109,7 +21110,7 @@ var Util = __webpack_require__(0);
 
 var Helper = __webpack_require__(117);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -21417,7 +21418,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
  */
 var Util = __webpack_require__(0);
 
-var Interaction = __webpack_require__(41);
+var Interaction = __webpack_require__(28);
 
 var Chart = __webpack_require__(12);
 
@@ -21624,6 +21625,430 @@ function (_Interaction) {
 
 Chart.registerInteraction('pie-move', PieMove);
 module.exports = PieMove;
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+/*
+ * author: Hao Chen
+ * description: zoom the data-intensive area
+ */
+var Util = __webpack_require__(0);
+
+var Interaction = __webpack_require__(28);
+
+var Chart = __webpack_require__(12);
+
+var PieZoom =
+/*#__PURE__*/
+function (_Interaction) {
+  _inheritsLoose(PieZoom, _Interaction);
+
+  var _proto = PieZoom.prototype;
+
+  // 获取基本配置参数
+  _proto.getDefaultCfg = function getDefaultCfg() {
+    var defaultCfg = _Interaction.prototype.getDefaultCfg.call(this);
+
+    defaultCfg = Util.mix({}, defaultCfg, {
+      // 默认设置
+      startEvent: 'tap',
+      processEvent: null,
+      animate: false,
+      zoomFunction: false,
+      dataSource: null
+    }); // 微信&小程序适配
+
+    if (Util.isWx || Util.isMy) {
+      defaultCfg.startEvent = 'touchstart';
+      defaultCfg.endEvent = 'touchend';
+    }
+
+    return defaultCfg;
+  };
+
+  function PieZoom(cfg, chart) {
+    var _this;
+
+    _this = _Interaction.call(this, cfg, chart) || this;
+    var zoomedData;
+    var zoomedFlag = false;
+    var animating = false;
+    return _this;
+  } // 重新绘制图表
+
+
+  _proto._repaintChart = function _repaintChart(angle) {
+    var chartCoord = this.chart.get('coord');
+    var coordStart = chartCoord.startAngle + angle;
+    var coordEnd = chartCoord.endAngle + angle;
+    this.chart.animate(false);
+    this.chart.coord('polar', {
+      transposed: true,
+      radius: 0.8,
+      startAngle: coordStart,
+      endAngle: coordEnd
+    });
+    this.chart.pieLabel({
+      lineStyle: {
+        opacity: 0
+      },
+      anchorStyle: {
+        opacity: 0
+      }
+    });
+    this.chart.source(this.dataSource);
+    this.chart.repaint();
+  } // 改变底部的Legend
+  ;
+
+  _proto._changeLegend = function _changeLegend(tapShape) {
+    var targetShape = tapShape;
+    var legend = this.chart.get('legendController').legends.bottom[0];
+    legend.items[0].name = targetShape.get('origin')._origin.name;
+    legend.items[0].value = targetShape.get('origin')._origin.proportion;
+    var legendMarkerStyle = {
+      symbol: 'square',
+      fill: targetShape.get('origin').color,
+      radius: 4
+    };
+    legend.items[0].marker = legendMarkerStyle;
+  } // 获取点击的元素，以及指腹覆盖的范围
+  ;
+
+  _proto._getTapShapeByData = function _getTapShapeByData(data) {
+    var geom = this.chart.get('geoms')[0];
+    var container = geom.get('container');
+    var children = container.get('children');
+    var selectedShape = null;
+    Util.each(children, function (child) {
+      if (child.get('isShape') && child.get('className') === geom.get('type')) {
+        var shapeData = child.get('origin')._origin;
+
+        if (Util.isObjectValueEqual(shapeData, data)) {
+          selectedShape = child;
+          return false;
+        }
+      }
+    });
+    return selectedShape;
+  };
+
+  _proto._getTapShapes = function _getTapShapes(e) {
+    var chart = this.chart;
+
+    if (e.type === 'tap') {
+      e.clientX = e.center.x;
+      e.clientY = e.center.y;
+    }
+
+    ;
+
+    var _Util$createEvent = Util.createEvent(e, chart),
+        x = _Util$createEvent.x,
+        y = _Util$createEvent.y;
+
+    var records = chart.getSnapRecords({
+      x: x,
+      y: y
+    });
+    if (!records.length) return;
+    var data = records[0]._origin;
+
+    var tapShape = this._getTapShapeByData(data);
+
+    return tapShape;
+  } // 根据点击的元素，旋转到底部
+  ;
+
+  _proto._slideToMiddle = function _slideToMiddle(angle, animateConfig) {
+    var _this2 = this;
+
+    var geom = this.chart.get('geoms')[0];
+    var container = geom.get('container');
+    var center = this.chart.get('coord').center;
+    var angleFromBottom = Math.PI / 2 - angle;
+
+    var diff = function diff(t) {
+      return angleFromBottom * t;
+    };
+
+    if (angleFromBottom !== 0) {
+      container.animate().to(animateConfig).onFrame(function (t) {
+        _this2.animating = true;
+        var frameAngle = diff(t);
+        container.setTransform([['t', center.x, center.y], ['r', frameAngle], ['t', -center.x, -center.y]]);
+
+        if (t === 1) {
+          _this2.animating = false;
+
+          _this2._repaintChart(angleFromBottom);
+        }
+      });
+    }
+  };
+
+  _proto._rotateTapShapeToBottom = function _rotateTapShapeToBottom(tapShape) {
+    var startAngle = tapShape.attr('startAngle');
+    var endAngle = tapShape.attr('endAngle');
+    var middleAngle = (startAngle + endAngle) / 2;
+
+    if (startAngle > endAngle && endAngle <= 0) {
+      middleAngle = (Math.PI * 2 - Math.abs(startAngle - endAngle)) / 2 + startAngle;
+
+      if (middleAngle > 1.5 * Math.PI) {
+        middleAngle = middleAngle - 2 * Math.PI;
+      }
+    }
+
+    this._slideToMiddle(middleAngle, {
+      duration: 350,
+      easing: 'backOut'
+    });
+
+    this._changeLegend(tapShape);
+  } // 根据点击的位置，计算周边数据密集区的大小
+  ;
+
+  _proto._createRandomPoints = function _createRandomPoints(range) {
+    // 产生点击区域周围range范围的随机点
+    return Math.floor(Math.random() * (Math.random() > 0.5 ? 1 : -1) * range);
+  };
+
+  _proto._getShapeByPoint = function _getShapeByPoint(point) {
+    var pointAxis = {
+      x: point[0],
+      y: point[1]
+    };
+    var pointRecord = this.chart.getSnapRecords(pointAxis)[0];
+
+    if (pointRecord !== undefined) {
+      var pointShape = this._getTapShapeByData(pointRecord._origin);
+
+      return pointShape;
+    } else {
+      return undefined;
+    }
+  };
+
+  _proto._getTapAreaShapes = function _getTapAreaShapes(e, accuracy) {
+    var tapCenter = e.center;
+    var tapShape = [this._getShapeByPoint([tapCenter.x, tapCenter.y])];
+    var randomAxis;
+
+    for (var i = 0; i < accuracy; i++) {
+      randomAxis = [tapCenter.x + this._createRandomPoints(20), tapCenter.y + this._createRandomPoints(20)];
+      tapShape.push(this._getShapeByPoint(randomAxis));
+    }
+
+    tapShape = Array.from(new Set(tapShape));
+    var newTapShape = [];
+    tapShape.forEach(function (item) {
+      if (item !== undefined) {
+        newTapShape.push(item);
+      }
+    });
+    return newTapShape;
+  } // 获取点击区域的名字
+  ;
+
+  _proto._getTapAreaNames = function _getTapAreaNames(shapes) {
+    var names = [];
+
+    for (var i = 0; i < shapes.length; i++) {
+      var shapeName = shapes[i]._attrs.origin._origin.name;
+
+      if (shapeName) {
+        names.push(shapeName);
+      }
+    }
+
+    return names;
+  } // 计算数据密集区是否符合条件
+  ;
+
+  _proto._caculateZoomArea = function _caculateZoomArea(tapAreaNames) {
+    var geom = this.chart.get('geoms')[0];
+    var container = geom.get('container');
+    var children = container.get('children');
+    var proportionAll = 0;
+    var tapAreaProportion = 0;
+    children.forEach(function (item) {
+      var childProportion = item.get('origin')._origin.proportion;
+
+      var childName = item.get('origin')._origin.name;
+
+      if (childProportion && childName) {
+        proportionAll += childProportion;
+      }
+
+      for (var i = 0; i < tapAreaNames.length; i++) {
+        if (childName === tapAreaNames[i]) {
+          tapAreaProportion += childProportion;
+        }
+      }
+    });
+
+    if (tapAreaNames.length < 2 || tapAreaProportion > proportionAll / 2) {
+      return false;
+    } else {
+      return true;
+    }
+  } // 对数据密集区的元素进行高亮
+  ;
+
+  _proto._getUnselectedShapes = function _getUnselectedShapes(tapAreaShapes, allShapes) {
+    return tapAreaShapes.concat(allShapes).filter(function (v, i, arr) {
+      return arr.indexOf(v) === arr.lastIndexOf(v);
+    });
+  };
+
+  _proto._highlightZoomArea = function _highlightZoomArea(tapAreaShapes) {
+    var geom = this.chart.get('geoms')[0];
+    var allShapes = geom.get('container').get('children');
+    var canvas = this.chart.get('canvas');
+
+    var unTapAreaShapes = this._getUnselectedShapes(tapAreaShapes, allShapes);
+
+    if (unTapAreaShapes) {
+      Util.each(unTapAreaShapes, function (s) {
+        s.attr("fillOpacity", 0.18);
+      });
+      Util.each(tapAreaShapes, function (s) {
+        s.attr("lineWidth", 1.5);
+      });
+    }
+
+    canvas.draw();
+  } // 对放大区改变图形元素效果
+  // 方案一：重新渲染整个饼图
+  ;
+
+  _proto._clearLegend = function _clearLegend() {
+    var legend = chart.get('legendController').legends.bottom[0];
+    legend.items[0].name = null;
+    legend.items[0].proportion = null;
+    legend.items[0].marker = null;
+  };
+
+  _proto._repaintZoomedArea1 = function _repaintZoomedArea1(tapAreaNames) {
+    this.zoomedData = [];
+    Util.deepMix(this.zoomedData, this.dataSource);
+    var tapAreaFlag;
+
+    for (var i = 0; i < this.dataSource.length; i++) {
+      tapAreaFlag = false;
+
+      for (var j = 0; j < tapAreaNames.length; j++) {
+        if (this.dataSource[i].name === tapAreaNames[j]) {
+          tapAreaFlag = true;
+        }
+      }
+
+      if (!tapAreaFlag) {
+        this.zoomedData[i].a = null;
+        this.zoomedData[i].proportion = null;
+      }
+    } // 根据匹配到的数据来重新绘制图表
+
+
+    this.chart.coord('polar', {
+      transposed: true,
+      radius: 0.8,
+      innerRadius: 0.3
+    });
+    this.chart.pieLabel({
+      sidePadding: 90,
+      activeShape: false,
+      label1: function label1(data) {
+        return {
+          text: data.name + ": " + data.proportion,
+          fill: '#343434',
+          fontWeight: 'bold'
+        };
+      }
+    });
+    this.chart.animate(true);
+    this.chart.source(this.zoomedData);
+    this.chart.repaint();
+    this.zoomedFlag = true;
+  } // 回到未缩放的状态
+  ;
+
+  _proto._findShapeByName = function _findShapeByName(name) {
+    var geom = this.chart.get('geoms')[0];
+    var allShapes = geom.get('container').get('children');
+    var resultShape;
+    Util.each(allShapes, function (shape) {
+      var everyShapeName = shape.get('origin')._origin.name;
+
+      if (everyShapeName === name) {
+        resultShape = shape;
+      }
+    });
+    return resultShape;
+  };
+
+  _proto._unzoomTheChart = function _unzoomTheChart(tapShapeName) {
+    this._repaintChart(0);
+
+    var tapShapeAfterZoom = this._findShapeByName(tapShapeName);
+
+    this._rotateTapShapeToBottom(tapShapeAfterZoom);
+
+    this.zoomedFlag = false;
+  };
+
+  _proto.start = function start(ev) {
+    var _this3 = this;
+
+    var tapShape = this._getTapShapes(ev);
+
+    if (!this.zoomFunction && tapShape !== undefined) {
+      // 不开启数据密集区放大功能
+      this._rotateTapShapeToBottom(tapShape);
+    } else if (this.zoomFunction && tapShape !== undefined) {
+      // 开启数据密集区放大功能
+      var tapAreaShapes = this._getTapAreaShapes(ev, 100);
+
+      var tapAreaNames = this._getTapAreaNames(tapAreaShapes);
+
+      var needZoomFlag = this._caculateZoomArea(tapAreaNames);
+
+      if (!needZoomFlag && !this.zoomedFlag) {
+        // 点击的区域不符合数据数据密集区，不需要放大
+        // 直接旋转
+        this._highlightZoomArea(tapAreaShapes);
+
+        setTimeout(function () {
+          _this3._rotateTapShapeToBottom(tapShape);
+        }, 500);
+      } else if (needZoomFlag && !this.zoomedFlag) {
+        // 点击的区域符合数据密集区，且处于未放大状态
+        // 将数据密集区高亮
+        this._highlightZoomArea(tapAreaShapes); // 改变图形元素
+
+
+        setTimeout(function () {
+          _this3._repaintZoomedArea1(tapAreaNames);
+        }, 800);
+      } else if (this.zoomedFlag) {
+        // 如果处于放大情况下
+        var tapShapeName = tapShape.get("origin")._origin.name;
+
+        this._unzoomTheChart(tapShapeName);
+      }
+    }
+  };
+
+  return PieZoom;
+}(Interaction);
+
+Chart.registerInteraction('pie-zoom', PieZoom);
+module.exports = PieZoom;
 
 /***/ })
 /******/ ]);
