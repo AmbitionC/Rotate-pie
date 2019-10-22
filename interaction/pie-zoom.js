@@ -291,6 +291,25 @@ class PieZoom extends Interaction {
         this.zoomedFlag = true;
     }
 
+    // 方案二：使用柱状图显示缩放区域的数据
+    _repaintZoomedArea2(tapAreaShapes) {
+        // 准备数据
+        this.zoomedData = [];
+        let colorArray = [];
+        tapAreaShapes.forEach((item) => {
+            this.zoomedData.push(item.get('origin')._origin);
+            colorArray.push(item.get('origin').color);
+        })
+        console.log(colorArray)
+        // 配置图表
+        this.chart.source(this.zoomedFlag);
+        this.chart.coord('rect', {
+            transposed: false,
+        })
+        this.chart.interval().position('a*proportion').color('name', colorArray).adjust('stack');
+        this.chart.render();
+    }
+
     // 回到未缩放的状态
     _findShapeByName(name) {
         const geom = this.chart.get('geoms')[0];
@@ -328,6 +347,9 @@ class PieZoom extends Interaction {
                 this._highlightZoomArea(tapAreaShapes);
                 setTimeout(() => {
                     this._rotateTapShapeToBottom(tapShape);
+                    // 为了避免两次操作都是数据密集区导致不会高亮的情况
+                    // 但是repaint需要重新绘制图表，需要避免这样的情况发生
+                    this.chart.repaint();
                 }, 500);
             } else if (needZoomFlag && !this.zoomedFlag) {
                 // 点击的区域符合数据密集区，且处于未放大状态
@@ -335,10 +357,12 @@ class PieZoom extends Interaction {
                 this._highlightZoomArea(tapAreaShapes);
                 // 改变图形元素
                 setTimeout(() => {
-                    this._repaintZoomedArea1(tapAreaNames);
+                    this._repaintZoomedArea2(tapAreaShapes);
+                    // this._repaintZoomedArea1(tapAreaNames);
                 }, 800)
             } else if (this.zoomedFlag) {
                 // 如果处于放大情况下
+                // 将图表还原成原来的形式，并且旋转到点击的元素上
                 const tapShapeName = tapShape.get("origin")._origin.name;
                 this._unzoomTheChart(tapShapeName);
             }
